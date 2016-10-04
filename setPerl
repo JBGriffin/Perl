@@ -1,0 +1,22 @@
+#!/usr/bin/perl -w
+
+# Attempt to open the filename given on the command line
+# If it exists, exit out and do not create the file
+open(FIND, "find  -name  $ARGV[0] -nowarn |") or die "Dead, bruddah.";
+@ra = <FIND>;
+if(@ra == 1){
+	die "Program exists! Don't do it!";
+}
+
+# File name does not exist. Create a new perl script,
+# Give user permissions
+# Open up the file through vi
+foreach (@ARGV){
+	`touch $_`;
+	open(OUTFILE, ">$_");
+	print OUTFILE "#!/usr/bin/perl -w\n";
+	`chmod u+x $_`;
+	$myCMD = "vi $_";
+	system($myCMD);
+}
+
